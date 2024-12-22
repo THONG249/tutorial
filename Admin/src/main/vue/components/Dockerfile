@@ -2,7 +2,7 @@ FROM ubuntu:latest
 LABEL authors="Thong Ngo"
 
 ENTRYPOINT ["top", "-b"]
-FROM node:14
+FROM node:node:20.11.0 AS build
 
 WORKDIR /app
 
