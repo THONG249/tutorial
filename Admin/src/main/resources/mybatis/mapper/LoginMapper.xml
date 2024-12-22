@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.systemadmin.cloudfun.admin.login.mapper.LoginMapper">
+    <resultMap id="usermap" type="com.systemadmin.cloudfun.admin.login.entity.UserVO">
+        <result column="id" jdbcType="VARCHAR" property="id"></result>
+        <result column="username" jdbcType="VARCHAR" property="username"></result>
+        <result column="password" jdbcType="VARCHAR" property="password"></result>
+        <result column="email" jdbcType="VARCHAR" property="email"></result>
+        <result column="crt_date" jdbcType="TIMESTAMP" property="crt_date"></result>
+        <result column="upt_date" jdbcType="TIMESTAMP" property="upt_date"></result>
+        <result column="del_yn" jdbcType="CHAR" property="del_yn"></result>
+    </resultMap>
+    <select id="getListUsers" resultType="com.systemadmin.cloudfun.admin.login.entity.UserVO">
+        SELECT * FROM USER
+    </select>
+
+    <select id="findByEmail" resultType="com.systemadmin.cloudfun.admin.login.entity.UserVO">
+        SELECT * FROM USER_INFOR
+        WHERE email = #{email}
+    </select>
+
+    <insert id="saveUser" parameterMap="usermap">
+        INSERT INTO USER_INFOR
+        (ID
+        ,USERNAME
+        ,PASSWORD
+        ,EMAIL
+        ,CRT_DATE
+        ,UPT_DATE
+        ,DEL_YN)
+        VALUES (#{id}
+               ,#{username}
+               ,#{password}
+               ,#{email}
+               ,CURRENT_TIMESTAMP
+               ,del_yn})CURRENT_TIMESTAMP
+               ,#{
+            ON CONFLICT (ID,USERNAME,PASSWORD,EMAIL)
+    DO UPDATE SET
+            DEL_YN = #{del_yn},
+                       UPT_DATE = CURRENT_TIMESTAMP;
+    </insert>
+</mapper>
